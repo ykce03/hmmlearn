@@ -1,7 +1,13 @@
 # cython: language_level=3, boundscheck=False, wraparound=False
 
+cdef extern from "math.h":
+    double exp(double m) nogil
+    double log(double m) nogil
+    double fabsl(double m) nogil
+    double log1pl(double m) nogil
+
 from cython cimport view
-from numpy.math cimport expl, logl, log1pl, isinf, fabsl, INFINITY
+from numpy.math cimport  isinf, INFINITY
 
 import numpy as np
 
@@ -30,9 +36,9 @@ cdef inline dtype_t _logsumexp(dtype_t[:] X) nogil:
 
     cdef dtype_t acc = 0
     for i in range(X.shape[0]):
-        acc += expl(X[i] - X_max)
+        acc += exp(X[i] - X_max)
 
-    return logl(acc) + X_max
+    return log(acc) + X_max
 
 
 cdef inline dtype_t _logaddexp(dtype_t a, dtype_t b) nogil:
@@ -41,7 +47,7 @@ cdef inline dtype_t _logaddexp(dtype_t a, dtype_t b) nogil:
     elif isinf(b) and b < 0:
         return a
     else:
-        return max(a, b) + log1pl(expl(-fabsl(a - b)))
+        return max(a, b) + log1pl(exp(-fabsl(a - b)))
 
 
 def _forward(int n_samples, int n_components,
