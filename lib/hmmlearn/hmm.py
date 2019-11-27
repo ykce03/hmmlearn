@@ -812,7 +812,7 @@ class GMMHMM(_BaseHMM):
             with np.errstate(under="ignore"):
                 res[:, i] = logsumexp(log_denses, axis=1)
 
-        res_mod = ((n_samples, self.n_components))
+        res_mod = np.zeros((n_samples, self.n_components))
 
         res_mod[:-1, :] = np.logaddexp(res[:-1, :]-np.log(2) , res[1:,:] - np.log(2))
         res_mod[-1, :] = res[-1,:]
