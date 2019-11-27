@@ -485,10 +485,10 @@ class _BaseHMM(BaseEstimator):
             if self.monitor_.converged:
                 break
 
-            eig, eiv = np.linalg.eig(self.transmat_.T)
-
-            print(eig, self.transmat_)
-            self.transmat_ = ((eiv * np.sqrt(eig)).dot(np.linalg.inv(eiv))).T
+            # eig, eiv = np.linalg.eig(self.transmat_.T)
+            #
+            # print(eig, self.transmat_)
+            # self.transmat_ = ((eiv * np.sqrt(eig)).dot(np.linalg.inv(eiv))).T
 
         return self
 
