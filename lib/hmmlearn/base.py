@@ -485,6 +485,11 @@ class _BaseHMM(BaseEstimator):
             if self.monitor_.converged:
                 break
 
+            eig, eiv = np.linalg.eig(self.transmat_.T)
+
+            print(eig, self.transmat_)
+            self.transmat_ = ((eiv * np.sqrt(eig)).dot(np.linalg.inv(eiv))).T
+
         return self
 
     def _do_viterbi_pass(self, framelogprob):
@@ -692,7 +697,3 @@ class _BaseHMM(BaseEstimator):
                                       self.transmat_, transmat_)
             normalize(self.transmat_, axis=1)
 
-            eig, eiv = np.linalg.eig(self.transmat_.T)
-
-            print (eig, self.transmat_)
-            self.transmat_ = ((eiv * np.sqrt(eig)).dot(np.linalg.inv(eiv))).T
