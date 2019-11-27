@@ -814,7 +814,7 @@ class GMMHMM(_BaseHMM):
 
         res_mod = ((n_samples, self.n_components))
 
-        res_mod[:-1, :] = np.logaddexp(res[:-1, :]-np.log(2) + res[1:,:] - np.log(2))
+        res_mod[:-1, :] = np.logaddexp(res[:-1, :]-np.log(2) , res[1:,:] - np.log(2))
         res_mod[-1, :] = res[-1,:]
         return res_mod
 
