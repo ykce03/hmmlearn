@@ -695,4 +695,4 @@ class _BaseHMM(BaseEstimator):
             eig, eiv = np.linalg.eig(self.transmat_.T)
 
             print (eig, abs(eig))
-            self.transmat_ = ((eiv * (np.sign(eig) * abs(eig) ** 0.6)).dot(np.linalg.inv(eiv))).T
+            self.transmat_ = ((eiv * np.sqrt(eig)).dot(np.linalg.inv(eiv))).T
