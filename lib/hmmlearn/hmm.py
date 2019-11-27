@@ -812,6 +812,21 @@ class GMMHMM(_BaseHMM):
             with np.errstate(under="ignore"):
                 res[:, i] = logsumexp(log_denses, axis=1)
 
+        res_mod = ((n_samples, self.n_components))
+
+        res_mod[:-1, :] = np.logaddexp(res[:-1, :]-np.log(2) + res[1:,:] - np.log(2))
+        res_mod[-1, :] = res[-1,:]
+        return res_mod
+
+    def _compute_log_likelihood_2(self, X):
+        n_samples, _ = X.shape
+        res = np.zeros((n_samples, self.n_components))
+
+        for i in range(self.n_components):
+            log_denses = self._compute_log_weighted_gaussian_densities(X, i)
+            with np.errstate(under="ignore"):
+                res[:, i] = logsumexp(log_denses, axis=1)
+
         return res
 
     def _initialize_sufficient_statistics(self):
